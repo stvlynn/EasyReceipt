@@ -1,0 +1,7 @@
+{
+  "name": "EasyReceipt",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
