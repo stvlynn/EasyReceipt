@@ -18,17 +18,17 @@ export interface ReceiptInfo {
   ReceivingEntityPhone: string;
   FileName: string;
   FileType: string;
-  FileNum: string;
+  FileNum: number;
   FileReceipient: string;
-  HandOverDate: string;
-  ReceivedDate: string;
+  HandOverDate: string;  // YYYY/MM/DD format
+  ReceivedDate: string;  // YYYY/MM/DD format
 }
 
 export class PhotoService {
   public photos: UserPhoto[] = [];
   private PHOTO_STORAGE: string = 'photos';
   private difyApiKey: string = '';
-  private difyBaseUrl: string = 'https://api.dify.ai';
+  private difyBaseUrl: string = '/api/dify';  // 修改为使用代理
 
   constructor() {
     this.loadSettings();
@@ -44,7 +44,8 @@ export class PhotoService {
     ]);
 
     this.difyApiKey = apiKey || '';
-    this.difyBaseUrl = baseUrl || 'https://api.dify.ai';
+    // 如果用户配置了自定义的 baseUrl，使用用户配置的，否则使用代理
+    this.difyBaseUrl = baseUrl || '/api/dify';
 
     if (!this.difyApiKey) {
       throw new Error('请先在设置页面配置Dify API Key');
@@ -186,7 +187,8 @@ export class PhotoService {
     });
 
     if (!uploadResponse.ok) {
-      throw new Error('文件上传失败');
+      const errorText = await uploadResponse.text();
+      throw new Error(`文件上传失败: ${errorText}`);
     }
 
     const uploadResult = await uploadResponse.json();
@@ -197,15 +199,26 @@ export class PhotoService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.difyApiKey}`
+        'Authorization': `Bearer ${this.difyApiKey}`,
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
-        file_ids: [fileId]
+        inputs: {
+          file: {
+            transfer_method: 'local_file',
+            upload_file_id: fileId,
+            type: 'image'
+          },
+          type: 'AcknowledgementReceipt'
+        },
+        response_mode: 'blocking',
+        user: 'default'
       })
     });
 
     if (!workflowResponse.ok) {
       const errorText = await workflowResponse.text();
+      console.error('Dify API Error:', errorText);  // 添加更详细的错误日志
       throw new Error(`Failed to process image with Dify: ${errorText}`);
     }
 

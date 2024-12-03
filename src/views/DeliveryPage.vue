@@ -2,6 +2,9 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>签收单</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -22,55 +25,55 @@
           <ion-list>
             <ion-item>
               <ion-label position="stacked">项目名称</ion-label>
-              <ion-input v-model="editedResult.ProjectName"></ion-input>
+              <ion-input v-model="editedResult.ProjectName" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">被审计单位</ion-label>
-              <ion-input v-model="editedResult.AuditedEntity"></ion-input>
+              <ion-input v-model="editedResult.AuditedEntity" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">被审计单位经办人</ion-label>
-              <ion-input v-model="editedResult.AuditedEntityPerson"></ion-input>
+              <ion-input v-model="editedResult.AuditedEntityPerson" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">被审计单位联系电话</ion-label>
-              <ion-input v-model="editedResult.AuditedEntityPhone"></ion-input>
+              <ion-input v-model="editedResult.AuditedEntityPhone" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">接收单位</ion-label>
-              <ion-input v-model="editedResult.ReceivingEntity"></ion-input>
+              <ion-input v-model="editedResult.ReceivingEntity" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">接收人</ion-label>
-              <ion-input v-model="editedResult.Recipient"></ion-input>
+              <ion-input v-model="editedResult.Recipient" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">接收单位联系电话</ion-label>
-              <ion-input v-model="editedResult.ReceivingEntityPhone"></ion-input>
+              <ion-input v-model="editedResult.ReceivingEntityPhone" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">文件名称</ion-label>
-              <ion-input v-model="editedResult.FileName"></ion-input>
+              <ion-input v-model="editedResult.FileName" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">文件类型</ion-label>
-              <ion-input v-model="editedResult.FileType"></ion-input>
+              <ion-input v-model="editedResult.FileType" type="text"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">份数</ion-label>
-              <ion-input v-model="editedResult.FileNum" type="number"></ion-input>
+              <ion-input v-model.number="editedResult.FileNum" type="number"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">接收人</ion-label>
-              <ion-input v-model="editedResult.FileReceipient"></ion-input>
+              <ion-input v-model="editedResult.FileReceipient" type="text"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label position="stacked">移交日期</ion-label>
-              <ion-input v-model="editedResult.HandOverDate" type="date"></ion-input>
+              <ion-label position="stacked">移交日期 (YYYY/MM/DD)</ion-label>
+              <ion-input v-model="editedResult.HandOverDate" type="text" placeholder="YYYY/MM/DD"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label position="stacked">接收日期</ion-label>
-              <ion-input v-model="editedResult.ReceivedDate" type="date"></ion-input>
+              <ion-label position="stacked">接收日期 (YYYY/MM/DD)</ion-label>
+              <ion-input v-model="editedResult.ReceivedDate" type="text" placeholder="YYYY/MM/DD"></ion-input>
             </ion-item>
           </ion-list>
           <!-- 添加底部空间，防止最后的输入框被按钮遮挡 -->
@@ -161,7 +164,7 @@ const submitToFeishu = async () => {
     }
 
     const response = await fetch(
-      `https://open.feishu.cn/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records/batch_create`,
+      `/api/feishu/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records/batch_create`,
       {
         method: 'POST',
         headers: {

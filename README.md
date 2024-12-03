@@ -4,6 +4,12 @@
 
 这是一个可以扫描收据图片并同步至飞书文档的 iOS/Android 应用。使用 Dify 对多模态模型进行编码。
 
+## Todo
+
+[] i18n
+
+[] UI 优化
+
 ## Frontend
 
 ## Backend

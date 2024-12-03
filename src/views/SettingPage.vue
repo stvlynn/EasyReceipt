@@ -2,6 +2,9 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>设置</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -106,7 +109,9 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonIcon
+  IonIcon,
+  IonButtons,
+  IonMenuButton
 } from '@ionic/vue';
 import { eye, eyeOff } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
